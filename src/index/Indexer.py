@@ -1,4 +1,4 @@
-from Index.WordIndex import WordIndex
+from WordIndex import WordIndex
 
 
 class Indexer:

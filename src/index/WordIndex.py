@@ -1,6 +1,6 @@
 import math
 
-from Index.DocumentIndex import DocumentIndex
+from DocumentIndex import DocumentIndex
 
 
 class WordIndex:
