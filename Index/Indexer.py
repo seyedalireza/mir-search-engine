@@ -5,9 +5,14 @@ class Indexer:
     def __init__(self):
         self.word_dict = {}
         self.bigram = {}
+        self.doc_set = {}
+        self.doc_count = 0
 
     def create_index(self, word_list):
         for n_word in word_list:
+            if n_word.doc_id not in self.doc_set:
+                self.doc_set[n_word.doc_id] = 1
+                self.update_doc_count()
             if n_word.word in self.word_dict:
                 self.word_dict[n_word.word].add_new_word(n_word)
             else:
@@ -43,6 +48,9 @@ class Indexer:
             self.word_dict.pop(word)
             self.delete_bigram(word)
         self.check_bigram()
+        if doc_id in self.doc_set:
+            self.doc_set.pop(doc_id)
+            self.update_doc_count()
 
     def delete_bigram(self, word):
         con_word = "$" + word + "$"
@@ -58,3 +66,8 @@ class Indexer:
                 del_list.append(bigram)
         for bigram in del_list:
             self.bigram.pop(bigram)
+
+    def update_doc_count(self):
+        self.doc_count = len(self.doc_set)
+        for word in self.word_dict:
+            self.word_dict[word].update_idf(self.doc_count)
