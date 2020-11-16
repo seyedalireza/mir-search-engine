@@ -37,7 +37,10 @@ class EnglishNormalizer:
         word_count = Counter([word[0] for word in tokens])
 
         # TODO: we can use stop words of other libraries
-        stop_words = [word[0] for word in tokens if word_count.get(word[0]) / len(tokens) > self.most_used_threshold]
+        if len(tokens) >= 20:
+            stop_words = [word[0] for word in tokens if word_count.get(word[0]) / len(tokens) > self.most_used_threshold]
+        else:
+            stop_words = []
         return list(filter(lambda x: x[0] not in stop_words, tokens)), set(stop_words)
 
 
@@ -72,5 +75,9 @@ class PersianNormalizer:
         word_count = Counter([word[0] for word in tokens])
 
         # TODO: we can use stop words of other libraries
-        stop_words = [word[0] for word in tokens if word_count.get(word[0]) / len(tokens) > self.most_used_threshold]
+        if len(tokens) >= 20:
+            stop_words = [word[0] for word in tokens if
+                          word_count.get(word[0]) / len(tokens) > self.most_used_threshold]
+        else:
+            stop_words = []
         return list(filter(lambda x: x[0] not in stop_words, tokens)), set(stop_words)
