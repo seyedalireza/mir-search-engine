@@ -69,7 +69,3 @@ class PersianCollectionParser:
                 words += [NormalizedWord(word[0], doc_id, column, word[1])
                           for word in normalized_words]
         return words
-
-
-print(PersianCollectionParser().get_all_words())
-
