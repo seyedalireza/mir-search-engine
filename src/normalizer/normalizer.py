@@ -1,4 +1,6 @@
 from collections import Counter
+
+import hazm
 import nltk
 from nltk.stem import SnowballStemmer
 from nltk import WordNetLemmatizer, word_tokenize
@@ -48,6 +50,9 @@ class PersianNormalizer:
 
     def __init__(self, most_used_threshold):
         self.most_used_threshold = most_used_threshold
+        self.normalizer = Normalizer()
+        self.stemmer = Stemmer()
+        self.lemmatizer = Lemmatizer()
 
     def parse_document(self, doc):
         """
@@ -55,21 +60,18 @@ class PersianNormalizer:
         :return: normalized document words with their position, most used words
         """
         # normalize
-        normalizer = Normalizer()
-        normalized_doc = normalizer.normalize(doc)
+        normalized_doc = self.normalizer.normalize(doc)
 
         # tokenize
-        tokens = word_tokenize(normalized_doc)
+        tokens = hazm.word_tokenize(normalized_doc)
         tokens = [(tokens[i], i) for i in range(len(tokens))]
         tokens = [word for word in tokens if word[0].isalpha() or word[0].isnumeric()]
 
         # stemming
-        stemmer = Stemmer()
-        tokens = [(stemmer.stem(word[0]), word[1]) for word in tokens]
+        tokens = [(self.stemmer.stem(word[0]), word[1]) for word in tokens]
 
         # lemmatizer
-        lemmatizer = Lemmatizer()
-        tokens = [(lemmatizer.lemmatize(word[0]), word[1]) for word in tokens]
+        tokens = [(self.lemmatizer.lemmatize(word[0]), word[1]) for word in tokens]
 
         # remove stop words
         word_count = Counter([word[0] for word in tokens])

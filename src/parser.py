@@ -1,11 +1,10 @@
 import csv
-
+import xml.etree.cElementTree as ET
 from index.NormalizedWord import NormalizedWord
 from normalizer.normalizer import EnglishNormalizer, PersianNormalizer
 
 
 class EnglishCollectionParser:
-
     doc_url = "../data/ted_talks.csv"
 
     def __init__(self):
@@ -30,7 +29,7 @@ class EnglishCollectionParser:
                         index = column[1]
                         txt = row[index]
                         normalized_words, _ = self.english_normalizer.parse_document(txt)
-                        words += [NormalizedWord(word[0], row[0], column[0], word[1]) for word in normalized_words]
+                        words += [NormalizedWord(word[0], int(row[0]), column[0], word[1]) for word in normalized_words]
                 line += 1
             return words
 
@@ -40,4 +39,37 @@ class PersianCollectionParser:
 
     def __init__(self):
         self.normalizer = PersianNormalizer(0.1)
+
+    def get_all_words(self):
+        tree = ET.parse(PersianCollectionParser.doc_url)
+        words = []
+        for page in tree.getroot():
+            doc_id = -1
+            title = ""
+            comment = ""
+            text = ""
+            for tag in page:
+                if "title" in tag.tag:
+                    title = tag.text
+                elif "id" in tag.tag:
+                    doc_id = int(tag.text)
+                elif "revision" in tag.tag:
+                    for rev in tag:
+                        if "comment" in rev.tag:
+                            comment = rev.text
+                        elif "text" in rev.tag:
+                            text = rev.text
+            document = {
+                "title": title,
+                "comment": comment,
+                "text": text
+            }
+            for column in document:
+                normalized_words, _ = self.normalizer.parse_document(document[column])
+                words += [NormalizedWord(word[0], doc_id, column, word[1])
+                          for word in normalized_words]
+        return words
+
+
+print(PersianCollectionParser().get_all_words())
 
