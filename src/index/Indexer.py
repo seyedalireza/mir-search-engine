@@ -1,4 +1,4 @@
-from WordIndex import WordIndex
+from src.index.WordIndex import WordIndex
 
 
 class Indexer:
@@ -14,10 +14,10 @@ class Indexer:
                 self.doc_set[n_word.doc_id] = 1
                 self.update_doc_count()
             if n_word.word in self.word_dict:
-                self.word_dict[n_word.word].add_new_word(n_word)
+                self.word_dict[n_word.word].add_new_word(n_word, self.doc_count)
             else:
                 self.word_dict[n_word.word] = WordIndex(n_word.word)
-                self.word_dict[n_word.word].add_new_word(n_word)
+                self.word_dict[n_word.word].add_new_word(n_word, self.doc_count)
                 self.add_bigram(n_word.word)
 
     def add_bigram(self, word):
@@ -71,3 +71,6 @@ class Indexer:
         self.doc_count = len(self.doc_set)
         for word in self.word_dict:
             self.word_dict[word].update_idf(self.doc_count)
+
+    def get_idf_tf(self, word):
+        return self.word_dict[word].get_idf_tf()

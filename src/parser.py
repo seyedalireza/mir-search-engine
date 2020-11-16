@@ -1,7 +1,7 @@
 import csv
 import xml.etree.cElementTree as ET
-from index.NormalizedWord import NormalizedWord
-from normalizer.normalizer import EnglishNormalizer, PersianNormalizer
+from src.index.NormalizedWord import NormalizedWord
+from src.normalizer.normalizer import EnglishNormalizer, PersianNormalizer
 
 
 class EnglishCollectionParser:

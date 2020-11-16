@@ -1,6 +1,6 @@
 import math
 
-from DocumentIndex import DocumentIndex
+from src.index.DocumentIndex import DocumentIndex
 
 
 class WordIndex:
@@ -10,7 +10,7 @@ class WordIndex:
         self.df = 0
         self.idf = 0
 
-    def add_new_word(self, normalized_word):
+    def add_new_word(self, normalized_word, doc_count):
         if normalized_word.word != self.word:
             return
         for i in range(len(self.doc_list)):
@@ -25,6 +25,7 @@ class WordIndex:
         self.doc_list.insert(len(self.doc_list), DocumentIndex(normalized_word.doc_id))
         self.doc_list[len(self.doc_list) - 1].add_p_index(normalized_word.p_type, normalized_word.p_index)
         self.update_df()
+        self.update_idf(doc_count)
 
     def delete_document(self, doc_id):
         del_list = []
@@ -40,3 +41,6 @@ class WordIndex:
 
     def update_idf(self, doc_count):
         self.idf = math.log(doc_count/self.df)
+
+    def get_idf_tf(self):
+        return [self.idf, self.doc_list]
