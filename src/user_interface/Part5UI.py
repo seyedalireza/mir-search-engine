@@ -7,6 +7,9 @@ class Part5UI(UI):
             self.print_help()
             input_str = int(input())
             if input_str == 1:
+                print("write your query: ")
+                query = input()
+                print("")
                 #TODO Show Result of an Input Query Using tf-idf
                 pass
             elif input_str == 2:
