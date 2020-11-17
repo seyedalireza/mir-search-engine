@@ -95,11 +95,11 @@ class ProximitySearchEngine(object):
 
     def search(self, query, dist, is_english=True):
         self.dist = dist
-        terms = list(set(query.split()))
         if is_english:
-            terms, _ = self.en_normalizer.parse_document(terms)
+            query, _ = self.en_normalizer.parse_document(query)
         else:
-            terms, _ = self.fa_normalizer.parse_document(terms)
+            query, _ = self.fa_normalizer.parse_document(query)
+        terms = list(set(query.split()))
         self.query = [word[0] for word in terms]
         docs = self._get_result_docs()
         return self._rank_results(docs, query)[:10]
