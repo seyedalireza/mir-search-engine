@@ -5,7 +5,7 @@ from src.normalizer.normalizer import EnglishNormalizer, PersianNormalizer
 
 
 class EnglishCollectionParser:
-    doc_url = "../data/ted_talks.csv"
+    doc_url = "data/ted_talks.csv"
 
     def __init__(self):
         self.english_normalizer = EnglishNormalizer(0.1)
