@@ -1,9 +1,10 @@
 from src.engine.engine import TfIdfSearchEngine
+from src.engine.proximity import ProximitySearchEngine
 from src.index.Indexer import Indexer
 from .UI import UI
 
 
-def get_query_params():
+def get_query_params(input_str):
     print("Write 1 for english or 2 for persian:")
     english = int(input()) == 1
     print("Write 1 for title or 2 for description or 3 for both:")
@@ -16,7 +17,12 @@ def get_query_params():
         in_title = False
     print("write your query: ")
     query = input()
-    return english, in_description, in_title, query
+    if input_str == 2:
+        print("Enter your distance: ")
+        dist = int(input())
+    else:
+        dist = None
+    return english, in_description, in_title, query, dist
 
 
 class Part5UI(UI):
@@ -26,7 +32,7 @@ class Part5UI(UI):
             self.print_help()
             input_str = int(input())
             if input_str == 1:
-                english, in_description, in_title, query = get_query_params()
+                english, in_description, in_title, query, _ = get_query_params(input_str)
                 engine = TfIdfSearchEngine(self.persian_indexer)
                 if english:
                     engine = TfIdfSearchEngine(self.english_indexer)
@@ -34,9 +40,12 @@ class Part5UI(UI):
                 print("your top 10 result is:")
                 print(",".join(list(map(str, result[:10]))))
             elif input_str == 2:
-                english, in_description, in_title, query = get_query_params()
-                #TODO Show Result of an Input Query Using Proximity Search
-                pass
+                english, in_description, in_title, query, dist = get_query_params(input_str)
+                if english:
+                    engine = ProximitySearchEngine(self.english_indexer)
+                else:
+                    engine = ProximitySearchEngine(self.persian_indexer)
+                engine.search(query, dist, english)
             elif input_str == 3:
                 return
 
