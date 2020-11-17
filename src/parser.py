@@ -5,13 +5,13 @@ from src.normalizer.normalizer import EnglishNormalizer, PersianNormalizer
 
 
 class EnglishCollectionParser:
-    doc_url = "../data/ted_talks.csv"
 
-    def __init__(self):
+    def __init__(self, doc_url="../data/ted_talks.csv"):
+        self.doc_url = doc_url
         self.english_normalizer = EnglishNormalizer(0.1)
 
     def get_all_words(self):
-        with open(EnglishCollectionParser.doc_url, encoding="utf-8") as file:
+        with open(self.doc_url, encoding="utf-8") as file:
             csv_reader = csv.reader(file)
             line = 0
             columns = []
@@ -34,13 +34,13 @@ class EnglishCollectionParser:
 
 
 class PersianCollectionParser:
-    doc_url = "../data/Persian.xml"
 
-    def __init__(self):
+    def __init__(self, doc_url="../data/Persian.xml"):
+        self.doc_url = doc_url
         self.normalizer = PersianNormalizer(0.1)
 
     def get_all_words(self):
-        tree = ET.parse(PersianCollectionParser.doc_url)
+        tree = ET.parse(self.doc_url)
         words = []
         for page in tree.getroot():
             doc_id = -1
@@ -64,5 +64,3 @@ class PersianCollectionParser:
                 words += [NormalizedWord(word[0], doc_id, column, word[1])
                           for word in normalized_words]
         return words
-
-EnglishCollectionParser().get_all_words()

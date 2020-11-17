@@ -31,7 +31,7 @@ class Part5UI(UI):
                 if english:
                     engine = TfIdfSearchEngine(self.english_indexer)
                 result = engine.search(query, english=english, in_title=in_title, in_description=in_description)
-                print("your top 50 result is:")
+                print("your top 10 result is:")
                 print(",".join(list(map(str, result[:10]))))
             elif input_str == 2:
                 english, in_description, in_title, query = get_query_params()
