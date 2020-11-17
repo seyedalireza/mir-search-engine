@@ -1,3 +1,6 @@
+from src.compressor.gamma import GammaCompressor, decoding
+
+
 class DocumentIndex:
     def __init__(self, doc_id):
         self.doc_id = doc_id
@@ -32,6 +35,22 @@ class DocumentIndex:
         for p_index in self.p_index["desc"]:
             out_str += str(p_index) + " "
         return out_str
+
+    def get_compressed_str(self):
+        title_compressor = GammaCompressor(indexes=self.p_index['title'])
+        desc_compressor = GammaCompressor(indexes=self.p_index['desc'])
+        out_str = ""
+        out_str += str(self.doc_id) + self.sep
+        out_str += str(self.tf[1]) + " " + str(self.tf[2]) + self.sep
+        out_str += title_compressor.encode()+self.sep+desc_compressor.encode()
+        return out_str
+
+    def load_compressed_str(self, in_str: str):
+        split_str = in_str.split(self.sep)
+        self.doc_id = int(split_str[0])
+        split_tf = split_str[1].split(" ")
+        self.tf = [int(split_tf[0]) + int(split_tf[1]), int(split_tf[0]), int(split_tf[1])]
+        self.p_index = {"title": decoding(split_str[2]), "desc": decoding(split_str[3])}
 
     def load_str(self, in_str: str):
         split_str = in_str.split(self.sep)
