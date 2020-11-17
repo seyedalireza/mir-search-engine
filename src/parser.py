@@ -5,15 +5,14 @@ from src.normalizer.normalizer import EnglishNormalizer, PersianNormalizer
 
 
 class EnglishCollectionParser:
-    doc_url = "data/ted_talks.csv"
+    doc_url = "../data/ted_talks.csv"
 
     def __init__(self):
         self.english_normalizer = EnglishNormalizer(0.1)
 
     def get_all_words(self):
-        with open(EnglishCollectionParser.doc_url) as file:
+        with open(EnglishCollectionParser.doc_url, encoding="utf-8") as file:
             csv_reader = csv.reader(file)
-            print(csv_reader)
             line = 0
             columns = []
             words = []
@@ -21,7 +20,7 @@ class EnglishCollectionParser:
                 if line == 0:
                     for c in range(len(row)):
                         if row[c] == "description":
-                            columns.append(("description", c))
+                            columns.append(("desc", c))
                         elif row[c] == "title":
                             columns.append(("title", c))
                 else:
@@ -58,7 +57,7 @@ class PersianCollectionParser:
                             text = rev.text
             document = {
                 "title": title,
-                "description": text
+                "desc": text
             }
             for column in document:
                 normalized_words, _ = self.normalizer.parse_document(document[column])

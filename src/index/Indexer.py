@@ -84,27 +84,27 @@ class Indexer:
                 sim_set.update(self.bigram[word[i:i+2]])
         return sim_set
 
-    def save_index(self):
-        address = "../data/indices.txt"
-        f = open(address, "w+")
+    def save_index(self, name="indices.txt"):
+        address = "../data/" + name
+        f = open(address, "w+", encoding="utf-8")
         f.write(self.get_index_str())
         f.close()
 
-    def load_index(self):
-        address = "../data/indices.txt"
-        f = open(address, "r")
+    def load_index(self, name="indices.txt"):
+        address = "../data/" + name
+        f = open(address, "r", encoding="utf-8")
         self.load_index_str(f.read())
         f.close()
 
-    def save_bigram(self):
-        address = "../data/bigram.txt"
-        f = open(address, "w+")
+    def save_bigram(self, name="bigram.txt"):
+        address = "../data/" + name
+        f = open(address, "w+", encoding="utf-8")
         f.write(self.get_bigram_str())
         f.close()
 
-    def load_bigram(self):
-        address = "../data/bigram.txt"
-        f = open(address, "r")
+    def load_bigram(self, name="bigram.txt"):
+        address = "../data/" + name
+        f = open(address, "r", encoding="utf-8")
         self.load_bigram_str(f.read())
         f.close()
 

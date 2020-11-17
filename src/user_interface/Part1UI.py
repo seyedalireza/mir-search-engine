@@ -4,7 +4,9 @@ from .UI import UI
 
 class Part1UI(UI):
 
-    def __init__(self):
+    def __init__(self, english_indexer, persian_indexer):
+        self.english_indexer = english_indexer
+        self.persian_indexer = persian_indexer
         self.en_normalizer = EnglishNormalizer(0.05)
         self.fa_normalizer = PersianNormalizer(0.05)
 
