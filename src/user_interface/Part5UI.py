@@ -21,8 +21,8 @@ def get_query_params():
 
 class Part5UI(UI):
 
-    def __init__(self, indexer: Indexer):
-        self.tf_idf_engine = TfIdfSearchEngine(indexer)
+    # def __init__(self, indexer: Indexer):
+    #     self.tf_idf_engine = TfIdfSearchEngine(indexer)
 
     def start_UI(self):
         while True:

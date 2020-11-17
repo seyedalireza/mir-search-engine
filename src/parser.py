@@ -13,7 +13,7 @@ class EnglishCollectionParser:
     def get_all_words(self):
         with open(EnglishCollectionParser.doc_url) as file:
             csv_reader = csv.reader(file)
-
+            print(csv_reader)
             line = 0
             columns = []
             words = []

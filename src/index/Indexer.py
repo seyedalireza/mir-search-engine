@@ -7,6 +7,7 @@ class Indexer:
         self.bigram = {}
         self.doc_set = {}
         self.doc_count = 0
+        self.sep = "~~"
 
     def create_index(self, word_list):
         for n_word in word_list:
@@ -82,3 +83,69 @@ class Indexer:
             if word[i:i+2] in self.bigram:
                 sim_set.update(self.bigram[word[i:i+2]])
         return sim_set
+
+    def save_index(self):
+        address = "../data/indices.txt"
+        f = open(address, "w+")
+        f.write(self.get_index_str())
+        f.close()
+
+    def load_index(self):
+        address = "../data/indices.txt"
+        f = open(address, "r")
+        self.load_index_str(f.read())
+        f.close()
+
+    def save_bigram(self):
+        address = "../data/bigram.txt"
+        f = open(address, "w+")
+        f.write(self.get_bigram_str())
+        f.close()
+
+    def load_bigram(self):
+        address = "../data/bigram.txt"
+        f = open(address, "r")
+        self.load_bigram_str(f.read())
+        f.close()
+
+    def get_index_str(self):
+        out_str = ""
+        out_str += str(self.doc_count) + self.sep
+        for doc in self.doc_set:
+            out_str += str(doc) + " "
+        out_str += self.sep
+        for word in self.word_dict:
+            out_str += self.word_dict[word].get_str() + self.sep
+        return out_str
+
+    def load_index_str(self, in_str):
+        split_str = in_str.split(self.sep)
+        self.doc_count = int(split_str[0])
+        self.doc_set = {}
+        for doc in split_str[1].split(" ")[:-1]:
+            self.doc_set[int(doc)] = 1
+        self.word_dict = {}
+        for word_str in split_str[2:-1]:
+            new_word = WordIndex("")
+            new_word.load_str(word_str)
+            self.word_dict[new_word.word] = new_word
+
+    def get_bigram_str(self):
+        out_str = ""
+        for bigram in self.bigram:
+            out_str += bigram + "@@"
+            for word in self.bigram[bigram]:
+                out_str += word + " "
+            out_str += self.sep
+        return out_str
+
+    def load_bigram_str(self, in_str: str):
+        split_str = in_str.split(self.sep)
+        self.bigram = {}
+        for bigram_pair in split_str[:-1]:
+            split_pair = bigram_pair.split("@@")
+            for word in split_pair[1].split(" ")[:-1]:
+                if split_pair[0] in self.bigram:
+                    self.bigram[split_pair[0]].append(word)
+                else:
+                    self.bigram[split_pair[0]] = [word]

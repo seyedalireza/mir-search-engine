@@ -1,9 +1,9 @@
-from .Part1UI import Part1UI
-from .Part2UI import Part2UI
-from .Part3UI import Part3UI
-from .Part4UI import Part4UI
-from .Part5UI import Part5UI
-from .UI import UI
+from src.user_interface.Part1UI import Part1UI
+from src.user_interface.Part2UI import Part2UI
+from src.user_interface.Part3UI import Part3UI
+from src.user_interface.Part4UI import Part4UI
+from src.user_interface.Part5UI import Part5UI
+from src.user_interface.UI import UI
 
 
 class MainUI(UI):
@@ -13,15 +13,15 @@ class MainUI(UI):
             self.print_help()
             input_str = int(input())
             if input_str == 1:
-                Part1UI().start_UI()
+                Part1UI(self.english_indexer, self.persian_indexer).start_UI()
             elif input_str == 2:
-                Part2UI().start_UI()
+                Part2UI(self.english_indexer, self.persian_indexer).start_UI()
             elif input_str == 3:
-                Part3UI().start_UI()
+                Part3UI(self.english_indexer, self.persian_indexer).start_UI()
             elif input_str == 4:
-                Part4UI().start_UI()
+                Part4UI(self.english_indexer, self.persian_indexer).start_UI()
             elif input_str == 5:
-                Part5UI().start_UI() # TODO pass indexer
+                Part5UI(self.english_indexer, self.persian_indexer).start_UI()
             elif input_str == 6:
                 print("Thank You For Using Our Search Engine")
                 return
