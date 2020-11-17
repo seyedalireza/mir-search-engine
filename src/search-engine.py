@@ -1,7 +1,7 @@
 import math
-from index.Indexer import Indexer
+from .index.Indexer import Indexer
 import numpy as np
-from normalizer.normalizer import EnglishNormalizer, PersianNormalizer
+from .normalizer.normalizer import EnglishNormalizer, PersianNormalizer
 
 
 class TfIdfSearchEngine:

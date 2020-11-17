@@ -24,7 +24,7 @@ class GammaCompressor(object):
     def encode(self):
         encoded_nums = [self.get_length(self.get_offset(gap)) + self.get_offset(gap) for gap in self.create_gap_list()]
         result = "".join(encoded_nums)
-        with open('../test/compressing_res.txt', 'w') as file:
+        with open('../../test/compressing_res.txt', 'w') as file:
             file.write(result)
         return '../test/compressing_res.txt'
 
