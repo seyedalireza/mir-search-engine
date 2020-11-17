@@ -21,18 +21,18 @@ def get_query_params():
 
 class Part5UI(UI):
 
-    # def __init__(self, indexer: Indexer):
-    #     self.tf_idf_engine = TfIdfSearchEngine(indexer)
-
     def start_UI(self):
         while True:
             self.print_help()
             input_str = int(input())
             if input_str == 1:
                 english, in_description, in_title, query = get_query_params()
-                result = self.tf_idf_engine.search(query, english=english, in_title=in_title, in_description=in_description)
+                engine = TfIdfSearchEngine(self.persian_indexer)
+                if english:
+                    engine = TfIdfSearchEngine(self.english_indexer)
+                result = engine.search(query, english=english, in_title=in_title, in_description=in_description)
                 print("your top 50 result is:")
-                print(",".join(result[:50]))
+                print(",".join(list(map(str, result[:10]))))
             elif input_str == 2:
                 english, in_description, in_title, query = get_query_params()
                 #TODO Show Result of an Input Query Using Proximity Search

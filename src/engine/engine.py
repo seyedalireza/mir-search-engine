@@ -37,7 +37,7 @@ class TfIdfSearchEngine:
             else:
                 total_result[v] = title_result[v]
         total_keys = list(total_result.keys())
-        total_keys.sort(key=lambda x: total_keys[x], reverse=True)
+        total_keys.sort(key=lambda x: total_result[x], reverse=True)
         return total_keys
 
     def get_vectors(self, terms):
@@ -51,11 +51,11 @@ class TfIdfSearchEngine:
         all_doc_ids = set()
         for word in uniqe_terms:
             idf, docs = self.indexer.get_idf_tf(word)
-            title_words_table[word] = [(doc.doc_id, math.log(doc.tf[1]) + 1) for doc in docs]
-            description_words_table[word] = [(doc.doc_id, math.log(doc.tf[2]) + 1) for doc in docs]
-            all_doc_ids += [doc.doc_id for doc in docs]
+            title_words_table[word] = [(doc.doc_id, math.log(doc.tf[1] + 1) + 0.01) for doc in docs]
+            description_words_table[word] = [(doc.doc_id, math.log(doc.tf[2] + 0.01) + 1) for doc in docs]
+            all_doc_ids = all_doc_ids.union(set([doc.doc_id for doc in docs]))
             idf_table[word] = idf
-            query_vector[word] = (math.log(terms.count(word)) + 1) * math.log(len(terms) / terms.count(word))
+            query_vector[word] = (math.log(terms.count(word) + 0.01) + 1) * math.log(len(terms) / (terms.count(word) + 0.01))
         title_doc_vectors = {}  # map of doc and term vector
         des_doc_vectors = {}  # map of doc and term vector
         for doc in all_doc_ids:
@@ -81,4 +81,7 @@ class TfIdfSearchEngine:
                     des_vector.append(0)
             title_doc_vectors[doc] = title_vector
             des_doc_vectors[doc] = des_vector
-        return des_doc_vectors, title_doc_vectors, query_vector
+        q_v = []
+        for i in uniqe_terms:
+            q_v.append(query_vector[i])
+        return des_doc_vectors, title_doc_vectors, q_v

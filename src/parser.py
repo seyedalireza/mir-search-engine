@@ -28,7 +28,7 @@ class EnglishCollectionParser:
                         index = column[1]
                         txt = row[index]
                         normalized_words, _ = self.english_normalizer.parse_document(txt)
-                        words += [NormalizedWord(word[0], int(row[0]), column[0], word[1]) for word in normalized_words]
+                        words += [NormalizedWord(word[0], line, column[0], word[1]) for word in normalized_words]
                 line += 1
             return words
 
@@ -64,3 +64,5 @@ class PersianCollectionParser:
                 words += [NormalizedWord(word[0], doc_id, column, word[1])
                           for word in normalized_words]
         return words
+
+EnglishCollectionParser().get_all_words()
