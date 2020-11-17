@@ -31,6 +31,7 @@ class Indexer:
                     for j in range(len(self.bigram[bigram])):
                         if self.bigram[bigram][j] > word:
                             index = j
+                            break
                     if index == -1:
                         index = len(self.bigram[bigram]) - 1
                     self.bigram[bigram].insert(index, word)
