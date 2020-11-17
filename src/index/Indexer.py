@@ -74,3 +74,11 @@ class Indexer:
 
     def get_idf_tf(self, word):
         return self.word_dict[word].get_idf_tf()
+
+    def get_similar_words(self, word):
+        word = "$" + word + "$"
+        sim_set = set()
+        for i in range(len(word) - 1):
+            if word[i:i+2] in self.bigram:
+                sim_set.update(self.bigram[word[i:i+2]])
+        return sim_set
