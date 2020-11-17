@@ -4,9 +4,9 @@ from user_interface.UI import UI
 
 
 def get_query_params():
-    print("wirte 1 for english or 2 for persian:")
+    print("Write 1 for english or 2 for persian:")
     english = int(input()) == 1
-    print("wirte 1 for title or 2 for description or 3 for both:")
+    print("Write 1 for title or 2 for description or 3 for both:")
     location = int(input())
     in_title = True
     in_description = True
