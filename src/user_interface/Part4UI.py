@@ -1,4 +1,4 @@
-from src.user_interface.UI import UI
+from user_interface.UI import UI
 
 
 class Part4UI(UI):

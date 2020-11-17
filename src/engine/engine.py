@@ -11,7 +11,7 @@ class TfIdfSearchEngine:
         self.en_normalizer = EnglishNormalizer(0.10)
         self.fa_normalizer = PersianNormalizer(0.1)
 
-    def search_english(self, query, in_title: bool = True, in_description: bool = True, english: bool = True):
+    def search(self, query, in_title: bool = True, in_description: bool = True, english: bool = True):
         if english:
             terms, _ = self.en_normalizer.parse_document(query)
         else:
