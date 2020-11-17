@@ -46,7 +46,6 @@ class PersianCollectionParser:
         for page in tree.getroot():
             doc_id = -1
             title = ""
-            comment = ""
             text = ""
             for tag in page:
                 if "title" in tag.tag:
@@ -55,14 +54,11 @@ class PersianCollectionParser:
                     doc_id = int(tag.text)
                 elif "revision" in tag.tag:
                     for rev in tag:
-                        if "comment" in rev.tag:
-                            comment = rev.text
-                        elif "text" in rev.tag:
+                        if "text" in rev.tag:
                             text = rev.text
             document = {
                 "title": title,
-                "comment": comment,
-                "text": text
+                "description": text
             }
             for column in document:
                 normalized_words, _ = self.normalizer.parse_document(document[column])

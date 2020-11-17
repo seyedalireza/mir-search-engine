@@ -2,7 +2,7 @@ from src.index.Indexer import Indexer
 import numpy as np
 import math
 from src.normalizer.normalizer import EnglishNormalizer, PersianNormalizer
-from src.search_engine import normalize_vector
+from src.engine.engine import normalize_vector
 
 
 class ProximitySearchEngine(object):

@@ -1,7 +1,8 @@
 import math
-from .index.Indexer import Indexer
+from src.index.Indexer import Indexer
 import numpy as np
-from .normalizer.normalizer import EnglishNormalizer, PersianNormalizer
+from src.normalizer.normalizer import EnglishNormalizer, PersianNormalizer
+from .utils import normalize_vector
 
 
 class TfIdfSearchEngine:
@@ -11,7 +12,7 @@ class TfIdfSearchEngine:
         self.en_normalizer = EnglishNormalizer(0.10)
         self.fa_normalizer = PersianNormalizer(0.1)
 
-    def search_english(self, query, in_title: bool = True, in_description: bool = True, english: bool = True):
+    def search(self, query, in_title: bool = True, in_description: bool = True, english: bool = True):
         if english:
             terms, _ = self.en_normalizer.parse_document(query)
         else:
@@ -81,11 +82,3 @@ class TfIdfSearchEngine:
             title_doc_vectors[doc] = title_vector
             des_doc_vectors[doc] = des_vector
         return des_doc_vectors, title_doc_vectors, query_vector
-
-
-def normalize_vector(array):
-    norm_term = 0
-    for i in array:
-        norm_term += i**2
-    norm_term = math.sqrt(norm_term)
-    return [i / norm_term for i in array]

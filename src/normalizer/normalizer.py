@@ -24,6 +24,7 @@ class EnglishNormalizer:
         tokens = [(tokens[i], i) for i in range(len(tokens))]
 
         # normalization
+        tokens = [("".join(c for c in word[0] if c.isalnum()), word[1]) for word in tokens]
         tokens = [word for word in tokens if word[0].isalpha() or word[0].isnumeric()]
         tokens = [(word[0].lower(), word[1]) for word in tokens]
 
@@ -65,7 +66,8 @@ class PersianNormalizer:
         # tokenize
         tokens = hazm.word_tokenize(normalized_doc)
         tokens = [(tokens[i], i) for i in range(len(tokens))]
-        tokens = [word for word in tokens if word[0].isalpha() or word[0].isnumeric()]
+        tokens = [("".join(c for c in word[0] if c.isalnum()), word[1]) for word in tokens]
+        tokens = [word for word in tokens if word[0].isalnum()]
 
         # stemming
         tokens = [(self.stemmer.stem(word[0]), word[1]) for word in tokens]
