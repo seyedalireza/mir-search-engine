@@ -179,18 +179,23 @@ class Indexer:
         lst = []
         for w in self.word_dict:
             for i in self.word_dict[w].doc_list:
+                lst.append(i.p_index['title'])
+                lst.append(i.p_index['desc'])
                 for n in i.p_index['title'] + i.p_index['desc']:
-                    num = len((str(n)))
-                    lst.append(num)
-                    count += num + 1
+                    count += len((str(n))) + 1
+
         return count, lst
 
     def vb_efficiency(self):
         size, lst = self.get_numbers()
-        new_size = len(VBCompressor(indexes=lst).encode())
+        new_size = 0
+        for i in lst:
+            new_size += len(VBCompressor(indexes=i).encode())
         return new_size * 100 / size / 8
 
     def gamma_efficiency(self):
         size, lst = self.get_numbers()
-        new_size = len(GammaCompressor(indexes=lst).encode())
+        new_size = 0
+        for i in lst:
+            new_size += len(VBCompressor(indexes=i).encode())
         return new_size * 100 / size / 8
