@@ -1,3 +1,4 @@
+from src.correction.Corrector import Corrector
 from .UI import UI
 
 
@@ -7,14 +8,54 @@ class Part4UI(UI):
             self.print_help()
             input_str = int(input())
             if input_str == 1:
-                #TODO Show Correct Form of an Input Query
-                pass
+                self.request_lang()
+                lang_input = int(input())
+                if lang_input == 1:
+                    print("Insert Query:")
+                    cor_form = Corrector(self.persian_indexer, 10).check_persian_query(input())
+                    print("Regular Form: ")
+                    print(cor_form[1])
+                    print("Normalized Form:")
+                    print(cor_form[0])
+                elif lang_input == 2:
+                    print("Insert Query:")
+                    cor_form = Corrector(self.english_indexer, 10).check_english_query(input())
+                    print("Regular Form: ")
+                    print(cor_form[1])
+                    print("Normalized Form:")
+                    print(cor_form[0])
+                elif lang_input == 3:
+                    continue
             elif input_str == 2:
-                #TODO Calculate Jacard Distance of Two Input Words
-                pass
+                self.request_lang()
+                lang_input = int(input())
+                if lang_input == 1:
+                    print("Insert Two Words:")
+                    dis = Corrector(self.persian_indexer, 10).calc_jcard(input(), input())
+                    print("Jacard Distance:")
+                    print(dis)
+                elif lang_input == 2:
+                    print("Insert Two Words:")
+                    dis = Corrector(self.english_indexer, 10).calc_jcard(input(), input())
+                    print("Jacard Distance:")
+                    print(dis)
+                elif lang_input == 3:
+                    continue
             elif input_str == 3:
-                #TODO Calculate Edit Distance of Two Input Words
-                pass
+                self.request_lang()
+                lang_input = int(input())
+                if lang_input == 1:
+                    print("Insert Two Words:")
+                    dis = Corrector(self.persian_indexer, 10).calc_edit_dis(input(), input())
+                    print("Edit Distance:")
+                    print(dis)
+                elif lang_input == 2:
+                    print("Insert Two Words:")
+                    dis = Corrector(self.english_indexer, 10).calc_edit_dis(input(), input())
+                    print("Edit Distance:")
+                    print(dis)
+                elif lang_input == 3:
+                    continue
             elif input_str == 4:
                 return
 

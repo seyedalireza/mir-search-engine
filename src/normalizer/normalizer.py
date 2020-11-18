@@ -7,8 +7,8 @@ from nltk import WordNetLemmatizer, word_tokenize
 from hazm import Normalizer, word_tokenize, Stemmer, Lemmatizer
 
 # first download wordnet
-# nltk.download("wordnet")
-
+nltk.download("wordnet")
+nltk.download("punkt")
 
 class EnglishNormalizer:
 

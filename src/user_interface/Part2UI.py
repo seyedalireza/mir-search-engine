@@ -12,12 +12,14 @@ class Part2UI(UI):
                 self.request_lang()
                 lang_input = int(input())
                 if lang_input == 1:
+                    print("Insert a Word:")
                     word = input()
                     word = PersianNormalizer(100).parse_document(word)[0][0][0]
                     for doc in self.persian_indexer.word_dict[word].doc_list:
                         print(doc.doc_id, end=" ")
                     print()
                 elif lang_input == 2:
+                    print("Insert a Word:")
                     word = input()
                     word = EnglishNormalizer(100).parse_document(word)[0][0][0]
                     for doc in self.english_indexer.word_dict[word].doc_list:
@@ -29,12 +31,14 @@ class Part2UI(UI):
                 self.request_lang()
                 lang_input = int(input())
                 if lang_input == 1:
+                    print("Insert a Word:")
                     word = input()
                     word = PersianNormalizer(100).parse_document(word)[0][0][0]
                     for doc in self.persian_indexer.word_dict[word].doc_list:
                         print(doc.doc_id, end=" ")
                         print(doc.p_index)
                 elif lang_input == 2:
+                    print("Insert a Word:")
                     word = input()
                     word = EnglishNormalizer(100).parse_document(word)[0][0][0]
                     for doc in self.english_indexer.word_dict[word].doc_list:
@@ -46,12 +50,14 @@ class Part2UI(UI):
                 self.request_lang()
                 lang_input = int(input())
                 if lang_input == 1:
+                    print("Insert a Bigram:")
                     bigram = input()
                     if bigram in self.persian_indexer.bigram:
                         print(self.persian_indexer.bigram[bigram])
                     else:
                         print("No Such Bigram Exists")
                 elif lang_input == 2:
+                    print("Insert a Bigram:")
                     bigram = input()
                     if bigram in self.english_indexer.bigram:
                         print(self.english_indexer.bigram[bigram])
@@ -63,11 +69,11 @@ class Part2UI(UI):
                 self.request_lang()
                 lang_input = int(input())
                 if lang_input == 1:
-                    print("Write Your New Document Location")
+                    print("Insert Your New Document Location")
                     doc_loc = input()
                     self.persian_indexer.create_index(PersianCollectionParser(doc_loc).get_all_words())
                 elif lang_input == 2:
-                    print("Write Your New Document Location")
+                    print("Insert Your New Document Location")
                     doc_loc = input()
                     self.english_indexer.create_index(EnglishCollectionParser(doc_loc).get_all_words())
                 elif lang_input == 3:
@@ -76,11 +82,11 @@ class Part2UI(UI):
                 self.request_lang()
                 lang_input = int(input())
                 if lang_input == 1:
-                    print("Write Your New Document ID")
+                    print("Insert Your New Document ID")
                     doc_id = int(input())
                     self.persian_indexer.delete_document(doc_id)
                 elif lang_input == 2:
-                    print("Write Your New Document ID")
+                    print("Insert Your New Document ID")
                     doc_id = int(input())
                     self.english_indexer.delete_document(doc_id)
                 elif lang_input == 3:

@@ -1,13 +1,45 @@
+from src.normalizer.normalizer import PersianNormalizer, EnglishNormalizer
+import hazm
+from nltk import word_tokenize
+
 class Corrector:
     def __init__(self, indexer, threshold):
         self.indexer = indexer
         self.threshold = threshold
 
+    def check_persian_query(self, query):
+        tokens = hazm.word_tokenize(query)
+        word_list = []
+        for tuple in PersianNormalizer(1).parse_document(query)[0]:
+            word_list.append(tuple[0])
+        cor_list = self.spell_check(word_list)
+        non_norm_list = []
+        for i in range(len(word_list)):
+            if word_list[i] == cor_list[i]:
+                non_norm_list.append(tokens[i])
+            else:
+                non_norm_list.append(cor_list[i])
+        return [" ".join(cor_list), " ".join(non_norm_list)]
+
+    def check_english_query(self, query):
+        tokens = word_tokenize(query)
+        word_list = []
+        for tuple in EnglishNormalizer(1).parse_document(query)[0]:
+            word_list.append(tuple[0])
+        cor_list = self.spell_check(word_list)
+        non_norm_list = []
+        for i in range(len(word_list)):
+            if word_list[i] == cor_list[i]:
+                non_norm_list.append(tokens[i])
+            else:
+                non_norm_list.append(cor_list[i])
+        return [" ".join(cor_list), " ".join(non_norm_list)]
+
     #TODo add support for query instead of list of words
     def spell_check(self, word_list):
         correct_list = []
         for word in word_list:
-            sim_list = [(0, 0)] * self.threshold
+            sim_list = [("", 0)] * self.threshold
             for sim_word in self.indexer.get_similar_words(word):
                 self.add_ordered(sim_word, self.calc_jcard(word, sim_word), sim_list)
             #most similar word, and its jacard and edit distance rating
@@ -54,4 +86,4 @@ class Corrector:
         for bigram in dict_word1:
             if bigram in dict_word2:
                 inter += 1
-        return inter / (len(word1) + len(word2) - 2 - inter)
+        return inter / (len(dict_word1) + len(dict_word2) - inter)

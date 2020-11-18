@@ -1,4 +1,4 @@
-
+from src.correction.Corrector import Corrector
 from src.index.Indexer import Indexer
 from src.index.NormalizedWord import NormalizedWord
 from src.parser import EnglishCollectionParser, PersianCollectionParser
@@ -27,3 +27,4 @@ persian_indexer.load_bigram("per_bigram.txt")
 persian_indexer.load_index("per_index.txt")
 
 MainUI(english_indexer, persian_indexer).start_UI()
+
