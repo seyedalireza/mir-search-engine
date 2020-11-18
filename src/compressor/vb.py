@@ -42,7 +42,3 @@ class VBCompressor(object):
         with open('compressing_res.txt', 'w') as file:
             file.write(result)
         return 'compressing_res.txt'
-
-
-x = VBCompressor()
-x.encode()
