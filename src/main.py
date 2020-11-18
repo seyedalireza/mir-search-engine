@@ -26,5 +26,5 @@ english_indexer.load_bigram("eng_bigram.txt")
 english_indexer.load_index("eng_comp_index.txt")
 persian_indexer.load_bigram("per_bigram.txt")
 persian_indexer.load_index("per_comp_index.txt")
-
+print(english_indexer.gamma_efficiency())
 MainUI(english_indexer, persian_indexer).start_UI()

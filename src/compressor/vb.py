@@ -2,17 +2,11 @@ import os
 
 
 class VBCompressor(object):
-    def __init__(self, index_file_address='compressor_index_test.txt'):
-        self.index_file = index_file_address
-        file_stat = os.stat(self.index_file)
-        print(file_stat.st_size / (1024 * 1024))
+    def __init__(self, indexes):
+        self.indexes = indexes
 
     def create_gap_list(self):
-        numbers = []
-        with open(self.index_file, 'r') as file:
-            lst = file.readlines()
-            for line in lst:
-                numbers.extend(list(map(int, line.split())))
+        numbers = self.indexes
         return [numbers[0]] + [numbers[i] - numbers[i - 1] for i in range(1, len(numbers))]
 
     def get_byte(self, number):
@@ -39,6 +33,4 @@ class VBCompressor(object):
     def encode(self):
         lst = self.create_gap_list()
         result = "".join([self.get_num(number) for number in lst])
-        with open('compressing_res.txt', 'w') as file:
-            file.write(result)
-        return 'compressing_res.txt'
+        return result
