@@ -1,5 +1,6 @@
 from src.index.WordIndex import WordIndex
-
+from src.compressor.gamma import GammaCompressor
+from src.compressor.vb import VBCompressor
 
 class Indexer:
     def __init__(self):
@@ -150,3 +151,24 @@ class Indexer:
                     self.bigram[split_pair[0]].append(word)
                 else:
                     self.bigram[split_pair[0]] = [word]
+
+    def get_numbers(self):
+        count = 0
+        lst = []
+        for w in self.word_dict:
+            for i in self.word_dict[w].doc_list:
+                for n in i.p_index['title'] + i.p_index['desc']:
+                    num = len((str(n)))
+                    lst.append(num)
+                    count += num + 1
+        return count, lst
+
+    def vb_efficiency(self):
+        size, lst = self.get_numbers()
+        new_size = len(VBCompressor(indexes=lst).encode())
+        return new_size * 100 / size / 8
+
+    def gamma_efficiency(self):
+        size, lst = self.get_numbers()
+        new_size = len(GammaCompressor(indexes=lst).encode())
+        return new_size * 100 / size / 8
