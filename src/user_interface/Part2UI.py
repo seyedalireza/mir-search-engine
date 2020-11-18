@@ -1,4 +1,5 @@
 from src.normalizer.normalizer import PersianNormalizer, EnglishNormalizer
+from src.parser import PersianCollectionParser, EnglishCollectionParser
 from .UI import UI
 
 
@@ -59,9 +60,31 @@ class Part2UI(UI):
                 elif lang_input == 3:
                     continue
             elif input_str == 4:
-                return
+                self.request_lang()
+                lang_input = int(input())
+                if lang_input == 1:
+                    print("Write Your New Document Location")
+                    doc_loc = input()
+                    self.persian_indexer.create_index(PersianCollectionParser(doc_loc).get_all_words())
+                elif lang_input == 2:
+                    print("Write Your New Document Location")
+                    doc_loc = input()
+                    self.english_indexer.create_index(EnglishCollectionParser(doc_loc).get_all_words())
+                elif lang_input == 3:
+                    continue
             elif input_str == 5:
-                return
+                self.request_lang()
+                lang_input = int(input())
+                if lang_input == 1:
+                    print("Write Your New Document ID")
+                    doc_id = int(input())
+                    self.persian_indexer.delete_document(doc_id)
+                elif lang_input == 2:
+                    print("Write Your New Document ID")
+                    doc_id = int(input())
+                    self.english_indexer.delete_document(doc_id)
+                elif lang_input == 3:
+                    continue
             elif input_str == 6:
                 return
 
