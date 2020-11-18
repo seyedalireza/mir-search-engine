@@ -2,6 +2,7 @@ from src.index.WordIndex import WordIndex
 from src.compressor.gamma import GammaCompressor
 from src.compressor.vb import VBCompressor
 
+
 class Indexer:
     def __init__(self):
         self.word_dict = {}
@@ -197,5 +198,5 @@ class Indexer:
         size, lst = self.get_numbers()
         new_size = 0
         for i in lst:
-            new_size += len(VBCompressor(indexes=i).encode())
+            new_size += len(GammaCompressor(indexes=i).encode())
         return new_size-size*8
