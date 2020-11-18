@@ -99,7 +99,7 @@ class ProximitySearchEngine(object):
             query, _ = self.en_normalizer.parse_document(query)
         else:
             query, _ = self.fa_normalizer.parse_document(query)
-        terms = list(set(query.split()))
+        terms = list(set(query))
         self.query = [word[0] for word in terms]
         docs = self._get_result_docs()
         return self._rank_results(docs, query)[:10]

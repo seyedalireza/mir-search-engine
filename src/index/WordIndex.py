@@ -47,6 +47,17 @@ class WordIndex:
     def get_idf_tf(self):
         return [self.idf, self.doc_list]
 
+    def get_compressed_str(self):
+        out_str = ""
+        out_str += self.word
+        out_str += self.sep
+        out_str += str(self.df) + " " + str(self.idf)
+        out_str += self.sep
+        for doc in self.doc_list:
+            out_str += doc.get_compressed_str()
+            out_str += self.sep
+        return out_str
+
     def get_str(self):
         out_str = ""
         out_str += self.word
@@ -57,6 +68,18 @@ class WordIndex:
             out_str += doc.get_str()
             out_str += self.sep
         return out_str
+
+    def load_compressed_str(self, in_str: str):
+        split_str = in_str.split(self.sep)
+        self.word = split_str[0]
+        split_df = split_str[1].split(" ")
+        self.df = int(split_df[0])
+        self.idf = float(split_df[1])
+        self.doc_list = []
+        for doc in split_str[2:-1]:
+            new_doc = DocumentIndex(-1)
+            new_doc.load_compressed_str(doc)
+            self.doc_list.append(new_doc)
 
     def load_str(self, in_str: str):
         split_str = in_str.split(self.sep)

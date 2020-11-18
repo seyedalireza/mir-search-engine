@@ -10,6 +10,7 @@ from hazm import Normalizer, word_tokenize, Stemmer, Lemmatizer
 nltk.download("wordnet")
 nltk.download("punkt")
 
+
 class EnglishNormalizer:
 
     def __init__(self, most_used_threshold):
