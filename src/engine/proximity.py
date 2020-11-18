@@ -32,8 +32,8 @@ class ProximitySearchEngine(object):
         self.common_docs = common_docs
         for word in query:
             _, docs = self.indexer.get_idf_tf(word)
-            docs = filter(lambda doc: doc.id in common_docs, docs)
-            all_docs[word] = {doc.id: doc for doc in docs}
+            docs = filter(lambda doc: doc.doc_id in common_docs, docs)
+            all_docs[word] = {doc.doc_id: doc for doc in docs}
         self.all_docs = all_docs
 
     def _find_in_dist(self, pi1, pi2):
