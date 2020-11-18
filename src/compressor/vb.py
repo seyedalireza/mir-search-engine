@@ -7,6 +7,8 @@ class VBCompressor(object):
 
     def create_gap_list(self):
         numbers = self.indexes
+        if not numbers:
+            return []
         return [numbers[0]] + [numbers[i] - numbers[i - 1] for i in range(1, len(numbers))]
 
     def get_byte(self, number):

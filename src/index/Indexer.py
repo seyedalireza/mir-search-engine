@@ -169,11 +169,11 @@ class Indexer:
         new_size = 0
         for i in lst:
             new_size += len(VBCompressor(indexes=i).encode())
-        return new_size * 100 / size / 8
+        return new_size-size*8
 
     def gamma_efficiency(self):
         size, lst = self.get_numbers()
         new_size = 0
         for i in lst:
             new_size += len(VBCompressor(indexes=i).encode())
-        return new_size * 100 / size / 8
+        return new_size-size*8
