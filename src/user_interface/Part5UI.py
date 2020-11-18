@@ -45,7 +45,9 @@ class Part5UI(UI):
                     engine = ProximitySearchEngine(self.english_indexer)
                 else:
                     engine = ProximitySearchEngine(self.persian_indexer)
-                engine.search(query, dist, english)
+                result = engine.search(query, dist, english)
+                print("your top 10 result is:")
+                print(",".join(list(map(str, result[:10]))))
             elif input_str == 3:
                 return
 

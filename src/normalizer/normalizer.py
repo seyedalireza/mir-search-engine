@@ -5,10 +5,25 @@ import nltk
 from nltk.stem import SnowballStemmer
 from nltk import WordNetLemmatizer, word_tokenize
 from hazm import Normalizer, word_tokenize, Stemmer, Lemmatizer
+import nltk
+import ssl
+
+def just_in_case(pack):
+    try:
+        _create_unverified_https_context = ssl._create_unverified_context
+    except AttributeError:
+        pass
+    else:
+        ssl._create_default_https_context = _create_unverified_https_context
+    nltk.download(pack)
 
 # first download wordnet
-nltk.download("wordnet")
-nltk.download("punkt")
+try:
+    nltk.download("wordnet")
+    nltk.download("punkt")
+except:
+    just_in_case('wordnet')
+    just_in_case('punkt')
 
 
 class EnglishNormalizer:

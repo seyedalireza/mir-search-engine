@@ -40,7 +40,7 @@ class ProximitySearchEngine(object):
         i, j = 0, 0
         dist = self.dist
         while i < len(pi1) and j < len(pi2):
-            n1, n2 = pi1[i], pi2[j]
+            n1, n2 = int(pi1[i]), int(pi2[j])
             if abs(n1 - n2) <= dist:
                 return True
             if n1 < n2:
@@ -63,7 +63,7 @@ class ProximitySearchEngine(object):
         for i in range(1, len(self.query)):
             w1, w2 = self.query[i - 1], self.query[i]
             new_doc = self._check_two_word(docs[w1], docs[w2])
-            ans = filter(lambda doc_id: doc_id in new_doc, ans)
+            ans = list(filter(lambda doc_id: doc_id in new_doc, ans))
         return ans
 
     def _get_result_docs(self):
@@ -80,8 +80,9 @@ class ProximitySearchEngine(object):
         score_lst = []
         all_docs = self.all_docs
         for word in self.query:
-            doc = all_docs[word][doc]
-            score_lst.append(math.log(doc.tf[1]) + 1)
+            d = all_docs[word][doc]
+            x = d.tf[0]
+            score_lst.append(math.log(x) + 1)
         return normalize_vector(score_lst)
 
     def _rank_results(self, docs, query):
@@ -99,7 +100,8 @@ class ProximitySearchEngine(object):
             query, _ = self.en_normalizer.parse_document(query)
         else:
             query, _ = self.fa_normalizer.parse_document(query)
+        query = list(map(lambda z: z[0], query))
         terms = list(set(query))
-        self.query = [word[0] for word in terms]
+        self.query = [word for word in terms]
         docs = self._get_result_docs()
         return self._rank_results(docs, query)[:10]
