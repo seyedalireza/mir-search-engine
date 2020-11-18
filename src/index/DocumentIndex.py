@@ -36,6 +36,17 @@ class DocumentIndex:
             out_str += str(p_index) + " "
         return out_str
 
+    def load_str(self, in_str: str):
+        split_str = in_str.split(self.sep)
+        self.doc_id = int(split_str[0])
+        split_tf = split_str[1].split(" ")
+        self.tf = [int(split_tf[0]) + int(split_tf[1]), int(split_tf[0]), int(split_tf[1])]
+        self.p_index = {"title": [], "desc": []}
+        for title_id in split_str[2].split(" ")[:-1]:
+            self.p_index["title"].append(title_id)
+        for desc_id in split_str[3].split(" ")[:-1]:
+            self.p_index["desc"].append(desc_id)
+
     def get_compressed_str(self):
         title_compressor = GammaCompressor(indexes=self.p_index['title'])
         desc_compressor = GammaCompressor(indexes=self.p_index['desc'])
@@ -51,14 +62,3 @@ class DocumentIndex:
         split_tf = split_str[1].split(" ")
         self.tf = [int(split_tf[0]) + int(split_tf[1]), int(split_tf[0]), int(split_tf[1])]
         self.p_index = {"title": decoding(split_str[2]), "desc": decoding(split_str[3])}
-
-    def load_str(self, in_str: str):
-        split_str = in_str.split(self.sep)
-        self.doc_id = int(split_str[0])
-        split_tf = split_str[1].split(" ")
-        self.tf = [int(split_tf[0]) + int(split_tf[1]), int(split_tf[0]), int(split_tf[1])]
-        self.p_index = {"title": [], "desc": []}
-        for title_id in split_str[2].split(" ")[:-1]:
-            self.p_index["title"].append(title_id)
-        for desc_id in split_str[3].split(" ")[:-1]:
-            self.p_index["desc"].append(desc_id)
