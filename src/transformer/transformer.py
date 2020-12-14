@@ -28,11 +28,14 @@ class Transformer:
 
     def _create_docs(self, data):
         docs = []
+        idfs = []
+        for j in range(len(self.index_table)):
+            idfs.append(math.log(len(self.all_words) / self.all_words.count(self.index_table[j])))
         for i in range(len(data)):
             title_vector = [0 for _ in range(len(self.index_table))]
             des_vector = [0 for _ in range(len(self.index_table))]
             for j in range(len(self.index_table)):
-                idf = math.log(len(self.all_words) / self.all_words.count(self.index_table[j]))
+                idf = idfs[j]
                 title_vector[j] = data[i][0].count(self.index_table[j]) * idf
                 des_vector[j] = data[i][1].count(self.index_table[j]) * idf
             docs.append(Doc(i, title_vector, des_vector, data[i][2]))
@@ -95,7 +98,3 @@ class Doc:
 
     def __repr__(self):
         return self.__str__()
-
-
-print(Transformer().get_test_data())
-print(Transformer().get_index_dict())
