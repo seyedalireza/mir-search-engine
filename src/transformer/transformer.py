@@ -2,11 +2,12 @@ import math
 from typing import List
 import csv
 from src.normalizer.normalizer import EnglishNormalizer
+import numpy as np
 
 
 class Transformer:
     train_set_path = "../../data/train.csv"
-    test_set_path = "../../data/train.csv"
+    test_set_path = "../../data/test.csv"
 
     """
     index_table = list of words in sorted order.
@@ -61,10 +62,12 @@ class Transformer:
                     index = columns["title"]
                     txt = row[index]
                     normalized_words, _ = self.english_normalizer.parse_document(txt)
+                    normalized_words = [word for word in normalized_words if word[0].isalpha()]
                     title_words = [word[0] for word in normalized_words]
                     index = columns["desc"]
                     txt = row[index]
                     normalized_words, _ = self.english_normalizer.parse_document(txt)
+                    normalized_words = [word for word in normalized_words if word[0].isalpha()]
                     des_words = [word[0] for word in normalized_words]
                     index = columns["views"]
                     class_type = int(row[index])
@@ -88,8 +91,8 @@ class Doc:
 
     def __init__(self, doc_id: int, title_vector: List, des_vector: List, class_type: int):
         self.title_vector = title_vector
-        self.des_vector = des_vector
-        self.class_type = class_type
+        self.des_vector = np.array(des_vector)
+        self.class_type = np.array(class_type)
         self.doc_id = doc_id
 
     def __str__(self):
