@@ -6,8 +6,8 @@ import numpy as np
 
 
 class Transformer:
-    train_set_path = "../../data/train.csv"
-    test_set_path = "../../data/test.csv"
+    train_set_path = "../data/train.csv"
+    test_set_path = "../data/test.csv"
 
     """
     index_table = list of words in sorted order.

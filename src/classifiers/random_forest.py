@@ -9,14 +9,10 @@ from sklearn.metrics import accuracy_score
 from normalizer.normalizer import EnglishNormalizer
 from transformer.transformer import Transformer
 
+from src.classifiers.classifier import Classifier
 
-class RF:
 
-    def __init__(self, transformer: Transformer):
-        self.transformer = transformer
-        self.normalizer = EnglishNormalizer(0.1)
-        self.des_model = None
-        self.title_model = None
+class RF(Classifier):
 
     def predict(self, text):
         normalized_words, _ = self.normalizer.parse_document(text)
