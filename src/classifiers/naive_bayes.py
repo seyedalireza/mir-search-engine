@@ -9,10 +9,10 @@ from src.transformer.transformer import Transformer
 class NB(Classifier):
     def __init__(self, transformer: Transformer):
         super(NB, self).__init__(transformer)
-        self.des_c1 = pd.DataFrame(columns=self.transformer.index_table, data=[])
-        self.des_c2 = pd.DataFrame(columns=self.transformer.index_table, data=[])
-        self.title_c1 = pd.DataFrame(columns=self.transformer.index_table, data=[])
-        self.title_c2 = pd.DataFrame(columns=self.transformer.index_table, data=[])
+        self.des_c1 = [0 for _ in range(len(self.transformer.index_table))]
+        self.des_c2 = [0 for _ in range(len(self.transformer.index_table))]
+        self.title_c1 = [0 for _ in range(len(self.transformer.index_table))]
+        self.title_c2 = [0 for _ in range(len(self.transformer.index_table))]
 
     def predict(self, text):
         normalized_words, _ = self.normalizer.parse_document(text)
@@ -39,7 +39,7 @@ class NB(Classifier):
             output[1] = 1
         else:
             output[1] = -1
-        return output[0], output[1]
+        return output[1], output[0]
 
     def test(self):
         t_data = self.transformer.get_test_data()
@@ -47,23 +47,23 @@ class NB(Classifier):
         con_matrix_title = [[0, 0], [0, 0]]
         for i in range(len(t_data)):
             predict = self.predict_vector(t_data[i].des_vector)
-            if predict == 1:
+            if predict[1] == 1:
                 if t_data[i].class_type == 1:
                     con_matrix_des[0][0] += 1
                 else:
                     con_matrix_des[1][0] += 1
-            if predict == -1:
+            if predict[1] == -1:
                 if t_data[i].class_type == 1:
                     con_matrix_des[0][1] += 1
                 else:
                     con_matrix_des[1][1] += 1
             predict = self.predict_vector(t_data[i].title_vector)
-            if predict == 1:
+            if predict[0] == 1:
                 if t_data[i].class_type == 1:
                     con_matrix_title[0][0] += 1
                 else:
                     con_matrix_title[1][0] += 1
-            if predict == -1:
+            if predict[0] == -1:
                 if t_data[i].class_type == 1:
                     con_matrix_title[0][1] += 1
                 else:
@@ -71,35 +71,33 @@ class NB(Classifier):
         return con_matrix_title, con_matrix_des
 
     def train(self):
-        df = pd.DataFrame(columns=self.transformer.index_table, data=[])
         t_data = self.transformer.get_train_data()
-        ddf = pd.DataFrame(columns=self.transformer.index_table, data=[])
-        cdf = []
+        des = [0 for _ in range(len(self.transformer.index_table))]
+        title = [0 for _ in range(len(self.transformer.index_table))]
         for i in range(len(t_data)):
-            df.loc[i] = t_data[i].title_vector
-            ddf.loc[i] = t_data[i].des_vector
-            cdf.append(t_data[i].class_type)
-        des = pd.DataFrame(columns=self.transformer.index_table, data=[])
-        title = pd.DataFrame(columns=self.transformer.index_table, data=[])
-        for i in range(len(t_data)):
-            if cdf[i] == 1:
-                self.des_c1 += df.loc[i]
-                self.title_c1 += ddf.loc[i]
+            if t_data[i].class_type == 1:
+                for j in range(len(self.des_c1)):
+                    self.des_c1[j] += t_data[i].des_vector[j]
+                    self.title_c1[j] += t_data[i].title_vector[j]
             else:
-                self.des_c2 += df.loc[i]
-                self.title_c2 += ddf.loc[i]
-            des += df.loc[i]
-            title += df.loc[i]
-        self.des_c1 += 1
-        self.des_c2 += 1
-        self.title_c1 += 1
-        self.title_c2 += 1
-        des += len(self.transformer.index_table)
-        title += len(self.transformer.index_table)
-        self.des_c1 = self.des_c1 / des
-        self.des_c2 = self.des_c2 / des
-        self.title_c1 = self.title_c1 / title
-        self.title_c2 = self.title_c2 / title
+                for j in range(len(self.des_c1)):
+                    self.des_c2[j] += t_data[i].des_vector[j]
+                    self.title_c2[j] += t_data[i].title_vector[j]
+            for j in range(len(self.des_c1)):
+                des[j] += t_data[i].des_vector[j]
+                title[j] += t_data[i].title_vector[j]
+        for j in range(len(self.des_c1)):
+            des[j] += len(self.transformer.index_table)
+            title[j] += len(self.transformer.index_table)
+            self.des_c1[j] += 1
+            self.des_c1[j] /= des[j]
+            self.des_c2[j] += 1
+            self.des_c2[j] /= des[j]
+            self.title_c1[j] += 1
+            self.title_c1[j] /= title[j]
+            self.title_c2[j] += 1
+            self.title_c2[j] /= title[j]
+
 
 
 

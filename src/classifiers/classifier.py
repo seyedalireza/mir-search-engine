@@ -20,5 +20,8 @@ class Classifier:
     def predict_vector(self, vector):
         pass
 
+    def test(self):
+        pass
+
     def train(self):
         pass
