@@ -1,3 +1,5 @@
+from classifiers.classification_generator import ClassificationGenerator
+from classifiers.random_forest import RF
 from src.classifiers.naive_bayes import NB
 from src.correction.Corrector import Corrector
 from src.index.DocumentIndex import DocumentIndex
@@ -22,18 +24,29 @@ from src.user_interface.MainUI import MainUI
 # persian_indexer.save_index("per_comp_index.txt")
 # print("saved persian")
 
-# english_indexer = Indexer()
-# persian_indexer = Indexer()
-# english_indexer.load_bigram("eng_bigram.txt")
-# english_indexer.load_index("eng_comp_index.txt")
-# persian_indexer.load_bigram("per_bigram.txt")
-# persian_indexer.load_index("per_comp_index.txt")
-# MainUI(english_indexer, persian_indexer).start_UI()
-transformer = Transformer()
-print("finished trasform")
-nb = NB(transformer)
-print("start train")
-nb.train()
-print("start test")
-print(nb.test())
-print("end")
+english_indexer = Indexer()
+persian_indexer = Indexer()
+english_indexer.load_bigram("eng_bigram.txt")
+english_indexer.load_index("eng_comp_index.txt")
+persian_indexer.load_bigram("per_bigram.txt")
+persian_indexer.load_index("per_comp_index.txt")
+MainUI(english_indexer, persian_indexer).start_UI()
+#
+
+# transformer = Transformer()
+# print("finished trasform")
+# nb = NB(transformer)
+# print("start train")
+# nb.train()
+# print("start test")
+# print(nb.test())
+# print("end")
+
+# tf = Transformer()
+# rf = RF(tf)
+# rf.train()
+# print(rf.test())
+# gr = ClassificationGenerator(tf, rf)
+# gr.train_and_write()
+# gr.load()
+# print(gr.get_description_class(10))

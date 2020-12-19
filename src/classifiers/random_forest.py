@@ -4,8 +4,6 @@ import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import f1_score
 from sklearn.metrics import accuracy_score
-from sklearn.metrics import accuracy_score
-
 from normalizer.normalizer import EnglishNormalizer
 from transformer.transformer import Transformer
 
@@ -13,15 +11,6 @@ from src.classifiers.classifier import Classifier
 
 
 class RF(Classifier):
-
-    def predict(self, text):
-        normalized_words, _ = self.normalizer.parse_document(text)
-        normalized_words = [word for word in normalized_words if word[0].isalpha()]
-        words = [word[0] for word in normalized_words]
-        v = []
-        for i in range(self.transformer.index_table):
-            v.append(words.count(self.transformer.index_table[i]))
-        return self.predict_vector(v)
 
     def predict_vector(self, vector):
         return self.title_model.predict([vector]), self.des_model.predict([vector])

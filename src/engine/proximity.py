@@ -1,3 +1,4 @@
+from classifiers.classification_generator import ClassificationGenerator
 from src.index.Indexer import Indexer
 import numpy as np
 import math
@@ -6,7 +7,7 @@ from src.engine.engine import normalize_vector
 
 
 class ProximitySearchEngine(object):
-    def __init__(self, indexer: Indexer):
+    def __init__(self, indexer: Indexer, classifier: ClassificationGenerator = None):
         self.dist = None
         self.indexer = indexer
         self.en_normalizer = EnglishNormalizer(0.10)
@@ -14,6 +15,7 @@ class ProximitySearchEngine(object):
         self.query = []
         self.common_docs = []
         self.all_docs = {}
+        self.classifier = classifier
 
     def _get_common_docs(self):
         query = self.query
@@ -94,7 +96,7 @@ class ProximitySearchEngine(object):
         result = [k for k, v in sorted(score_board.items(), key=lambda item: item[1])]
         return result
 
-    def search(self, query, dist, is_english=True):
+    def search(self, query, dist, is_english=True, in_most_views: bool = False):
         self.dist = dist
         if is_english:
             query, _ = self.en_normalizer.parse_document(query)
@@ -104,4 +106,8 @@ class ProximitySearchEngine(object):
         terms = list(set(query))
         self.query = [word for word in terms]
         docs = self._get_result_docs()
-        return self._rank_results(docs, query)[:10]
+        doc_ids = self._rank_results(docs, query)
+        if in_most_views:
+            doc_ids = [key for key in doc_ids
+                       if self.classifier.get_description_class(key) == 1 or self.classifier.get_title_class(key) == 1]
+        return doc_ids[:10]

@@ -3,16 +3,19 @@ from src.index.Indexer import Indexer
 import numpy as np
 from src.normalizer.normalizer import EnglishNormalizer, PersianNormalizer
 from .utils import normalize_vector
+from classifiers.classification_generator import ClassificationGenerator
 
 
 class TfIdfSearchEngine:
 
-    def __init__(self, indexer: Indexer):
+    def __init__(self, indexer: Indexer, classifier: ClassificationGenerator = None):
         self.indexer = indexer
         self.en_normalizer = EnglishNormalizer(0.10)
         self.fa_normalizer = PersianNormalizer(0.1)
+        self.classifier = classifier
 
-    def search(self, query, in_title: bool = True, in_description: bool = True, english: bool = True):
+    def search(self, query, in_title: bool = True, in_description: bool = True, english: bool = True,
+               in_most_views: bool = False):
         if english:
             terms, _ = self.en_normalizer.parse_document(query)
         else:
@@ -38,6 +41,9 @@ class TfIdfSearchEngine:
                 total_result[v] = title_result[v]
         total_keys = list(total_result.keys())
         total_keys.sort(key=lambda x: total_result[x], reverse=True)
+        if in_most_views:
+            total_keys = [key for key in total_keys
+                          if self.classifier.get_description_class(key) == 1 or self.classifier.get_title_class(key) == 1]
         return total_keys
 
     def get_vectors(self, terms):

@@ -1,7 +1,7 @@
 import math
 from typing import List
 import csv
-from src.normalizer.normalizer import EnglishNormalizer
+from normalizer.normalizer import EnglishNormalizer
 import numpy as np
 
 
@@ -24,8 +24,8 @@ class Transformer:
         for i in range(len(self.index_table)):
             self.words_index_dict[self.index_table[i]] = i
         test, _ = self._get_documents_and_words(Transformer.test_set_path)
-        self.train_data = self._create_docs(train_docs)
-        self.test_data = self._create_docs(test)
+        self.train_data, self.idf = self._create_docs(train_docs)
+        self.test_data, _ = self._create_docs(test)
 
     def _create_docs(self, data):
         docs = []
@@ -40,7 +40,7 @@ class Transformer:
                 title_vector[j] = data[i][0].count(self.index_table[j]) * idf
                 des_vector[j] = data[i][1].count(self.index_table[j]) * idf
             docs.append(Doc(i, title_vector, des_vector, data[i][2]))
-        return docs
+        return docs, idfs
 
     def _get_documents_and_words(self, path):
         documents = []  # map of doc_id to [list of title words, list of description words, class]
@@ -86,13 +86,22 @@ class Transformer:
     def get_index_dict(self):
         return self.index_table
 
+    def transform(self, text):
+        normalized_words, _ = self.english_normalizer.parse_document(text)
+        normalized_words = [word for word in normalized_words if word[0].isalpha()]
+        words = [word[0] for word in normalized_words]
+        v = []
+        for i in range(len(self.index_table)):
+            v.append(words.count(self.index_table[i]) * self.idf[i])
+        return v
+
 
 class Doc:
 
     def __init__(self, doc_id: int, title_vector: List, des_vector: List, class_type: int):
-        self.title_vector = title_vector
+        self.title_vector = np.array(title_vector)
         self.des_vector = np.array(des_vector)
-        self.class_type = np.array(class_type)
+        self.class_type = class_type
         self.doc_id = doc_id
 
     def __str__(self):
