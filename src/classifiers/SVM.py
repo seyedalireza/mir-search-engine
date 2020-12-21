@@ -14,8 +14,8 @@ class SVM(Classifier):
     def predict_vector(self, vector):
         # vector = np.array(vector)
         return (
-            self.classifier1.predict([vector]),
-            self.classifier2.predict([vector]),
+            self.classifier1.predict([vector])[0],
+            self.classifier2.predict([vector])[0],
         )
 
     def _title_train(self, titles, y):
