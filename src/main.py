@@ -7,6 +7,8 @@ from src.index.Indexer import Indexer
 from src.index.NormalizedWord import NormalizedWord
 from src.parser import EnglishCollectionParser, PersianCollectionParser
 from src.transformer.transformer import Transformer
+from src.classifiers.KNN import KNN
+from src.classifiers.SVM import SVM
 from src.user_interface.MainUI import MainUI
 #
 # to create a new save uncomment these
@@ -34,7 +36,7 @@ MainUI(english_indexer, persian_indexer).start_UI()
 #
 
 # transformer = Transformer()
-# print("finished trasform")
+# print("finished transform")
 # nb = NB(transformer)
 # print("start train")
 # nb.train()
@@ -50,3 +52,23 @@ MainUI(english_indexer, persian_indexer).start_UI()
 # gr.train_and_write()
 # gr.load()
 # print(gr.get_description_class(10))
+
+
+# transformer = Transformer()
+# print("finished transform")
+# lst = [1, 5, 9]
+# for i in lst:
+#     print(i)
+#     knn = KNN(transformer, k=i)
+#     print("start test")
+#     print(knn.test())
+#     print("end")
+
+# transformer = Transformer()
+# print("finished transform")
+# svm = SVM(transformer)
+# print("start train")
+# svm.train()
+# print("start test")
+# print(svm.test())
+# print("end")
