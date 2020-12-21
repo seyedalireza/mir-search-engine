@@ -53,16 +53,22 @@ MainUI(english_indexer, persian_indexer).start_UI()
 # gr.load()
 # print(gr.get_description_class(10))
 
+# svm generator
+# tf = Transformer()
+# svm = SVM(tf)
+# svm.train()
+# print(svm.test())
+# gr = ClassificationGenerator(tf, svm)
+# gr.train_and_write()
+# gr.load()
+# print(gr.get_description_class(10))
 
 # transformer = Transformer()
 # print("finished transform")
-# lst = [1, 5, 9]
-# for i in lst:
-#     print(i)
-#     knn = KNN(transformer, k=i)
-#     print("start test")
-#     print(knn.test())
-#     print("end")
+# knn = KNN(transformer)
+# print("start test")
+# print(knn.test())
+# print("end")
 
 # transformer = Transformer()
 # print("finished transform")
