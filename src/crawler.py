@@ -27,7 +27,7 @@ class Crawler(object):
         self.browser = webdriver.Chrome(executable_path='./chromedriver')
         self.browser.set_page_load_timeout(40)
         # options.add_argument('user-agent='+self.user_agent.ff)
-
+        self.ids = []
         print('here u go!')
         # self.browser = webdriver.Firefox(options=options)
 
@@ -37,10 +37,13 @@ class Crawler(object):
         return paper_id
 
     def _get_data(self):
+        paper_id = self._get_id(self.browser.current_url)
+        if paper_id in self.ids:
+            return
+        self.ids.append(paper_id)
         time.sleep(5)
         year = self.browser.find_element_by_class_name('year').text
         title = self.browser.find_element_by_class_name('name').text
-        paper_id = self._get_id(self.browser.current_url)
         authors_elements = self.browser.find_element_by_class_name('authors').find_elements_by_class_name('author')
         authors = [e.text for e in authors_elements if len(e.text)]
         ps = self.browser.find_elements_by_tag_name('p')
@@ -92,5 +95,5 @@ class Crawler(object):
             self._get_data()
 
 
-crawler = Crawler('../data/start.txt')
+crawler = Crawler('../data/start.txt', 5000)
 crawler.get_all_data()
