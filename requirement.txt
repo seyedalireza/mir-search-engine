@@ -1,3 +1,5 @@
 hazm
 nltk
 bitstring
+selenium==3.141.0
+fake-useragent
