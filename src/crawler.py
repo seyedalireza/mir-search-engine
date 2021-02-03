@@ -83,10 +83,10 @@ class Crawler(object):
 
     def get_all_data(self):
         while len(self.data) < self.number:
-            print(len(self.data))
             links = self.links.copy()[:self.number-len(self.data)]
             self.links = []
             self._load_links(links)
+            print(len(self.data))
         self._add_to_file()
 
     def _load_links(self, links):
