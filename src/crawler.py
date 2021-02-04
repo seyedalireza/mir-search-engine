@@ -18,6 +18,7 @@ import random
 class Crawler(object):
     def __init__(self, link_file, number=50):
         self.links_file = link_file
+        self.pre = 'https://academic.microsoft.com/paper/'
         self.number = number
         with open(self.links_file, 'r') as file:
             self.links = file.read().split()
@@ -38,10 +39,8 @@ class Crawler(object):
 
     def _get_data(self):
         paper_id = self._get_id(self.browser.current_url)
-        if paper_id in self.ids:
-            return
         self.ids.append(paper_id)
-        time.sleep(5)
+        time.sleep(2)
         year = self.browser.find_element_by_class_name('year').text
         title = self.browser.find_element_by_class_name('name').text
         authors_elements = self.browser.find_element_by_class_name('authors').find_elements_by_class_name('author')
@@ -62,8 +61,9 @@ class Crawler(object):
         for el in references_elements:
             try:
                 a = el.find_element_by_tag_name('a').get_attribute('href')
-                new_links.append(a)
-                references.append(self._get_id(a))
+                id_ = self._get_id(a)
+                new_links.append(self.pre+id_+'/reference/')
+                references.append(id_)
             except:
                 continue
         self.links.extend(new_links)
@@ -91,8 +91,18 @@ class Crawler(object):
 
     def _load_links(self, links):
         for link in links:
+            paper_id = self._get_id(link)
+            if paper_id in self.ids or 'paper' not in link:
+                continue
             self.browser.get(link)
-            self._get_data()
+            try:
+                self._get_data()
+            except:
+                time.sleep(5)
+                try:
+                    self._get_data()
+                except:
+                    continue
 
 
 crawler = Crawler('../data/start.txt', 5000)
