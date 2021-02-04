@@ -41,6 +41,7 @@ class Crawler(object):
         paper_id = self._get_id(self.browser.current_url)
         self.ids.append(paper_id)
         time.sleep(2)
+        self.browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
         year = self.browser.find_element_by_class_name('year').text
         title = self.browser.find_element_by_class_name('name').text
         authors_elements = self.browser.find_element_by_class_name('authors').find_elements_by_class_name('author')
@@ -56,8 +57,16 @@ class Crawler(object):
         try:
             references_elements = self.browser.find_elements_by_class_name('primary_paper')
         except:
-            time.sleep(5)
+            time.sleep(2)
             references_elements = self.browser.find_elements_by_class_name('primary_paper')
+        if not len(references_elements):
+            time.sleep(1)
+            self.browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+            try:
+                references_elements = self.browser.find_elements_by_class_name('primary_paper')
+            except:
+                time.sleep(2)
+                references_elements = self.browser.find_elements_by_class_name('primary_paper')
         for el in references_elements:
             try:
                 a = el.find_element_by_tag_name('a').get_attribute('href')
@@ -66,7 +75,7 @@ class Crawler(object):
                 references.append(id_)
             except:
                 continue
-        self.links.extend(new_links)
+        self.links = self.links + new_links
         self.data.append({
             'title': title,
             'authors': authors,
@@ -85,24 +94,22 @@ class Crawler(object):
         while len(self.data) < self.number:
             links = self.links.copy()[:self.number-len(self.data)]
             self.links = []
-            self._load_links(links)
-            print(len(self.data))
-        self._add_to_file()
-
-    def _load_links(self, links):
-        for link in links:
-            paper_id = self._get_id(link)
-            if paper_id in self.ids or 'paper' not in link:
-                continue
-            self.browser.get(link)
-            try:
-                self._get_data()
-            except:
-                time.sleep(5)
+            print('links:', len(links))
+            for link in links:
+                paper_id = self._get_id(link)
+                if paper_id in self.ids or 'paper' not in link:
+                    continue
+                self.browser.get(link)
                 try:
                     self._get_data()
                 except:
-                    continue
+                    time.sleep(5)
+                    try:
+                        self._get_data()
+                    except:
+                        continue
+                print('done data:', len(self.data))
+        self._add_to_file()
 
 
 crawler = Crawler('../data/start.txt', 5000)
